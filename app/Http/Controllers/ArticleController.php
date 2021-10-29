@@ -7,8 +7,7 @@ use App\Http\Requests\UpdateArticleRequest;
 use App\Repositories\ArticleRepository;
 use App\Repositories\CategoryRepository;
 use App\Repositories\TagRepository;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
 class ArticleController extends Controller
@@ -25,7 +24,13 @@ class ArticleController extends Controller
     }
 
     public function index(){
-        $articles = $this->articleRepository->allArticles();
+        if(Auth::user()->isAdmin()){
+            $articles = $this->articleRepository->allAdminArticles() ;
+
+        }else{
+            $articles = $this->articleRepository->allUserArticles() ;
+
+        }
         return view('articles.index', compact('articles'));
     }
 
@@ -38,7 +43,6 @@ class ArticleController extends Controller
     public function store(ArticleRequest $request){
         $this->articleRepository->storeArticle($request->validated());
         Session::flash('success', 'Article created successfully');
-
         return redirect()->route('articles.index');
     }
 
@@ -55,6 +59,7 @@ class ArticleController extends Controller
         $tags_ids = $this->articleRepository->findSelectedTags($article);
         $tags = $this->tagRepository->allTags();
         $categories = $this->categoryRepository->allCategories();
+        Session::flash('success', 'Article updated successfully');
 
 
         return view('articles.edit', compact('categories', 'tags', 'article','tags_ids'));
@@ -68,6 +73,7 @@ class ArticleController extends Controller
 
     public function destroy($id){
         $this->articleRepository->deleteArticle($id);
+        Session::flash('success', 'Article deleted successfully');
         return redirect()->route('articles.index');
     }
 
@@ -75,8 +81,5 @@ class ArticleController extends Controller
         $this->articleRepository->approveArticle($id);
         return redirect()->route('articles.index');
     }
-
-
-
 
 }

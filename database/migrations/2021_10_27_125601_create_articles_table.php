@@ -22,7 +22,7 @@ class CreateArticlesTable extends Migration
             $table->enum('status', [0,1])->default(0);
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('category_id');
-            $table->date('created_at');
+            $table->datetime('created_at');
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');;

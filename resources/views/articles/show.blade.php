@@ -10,7 +10,7 @@
             <img src="{{asset('images/'. $article->image) }} "
                  style="width: 450px;height: 400px;">
             <h1>{{ $article->title }}</h1>
-            <p class="lead">{{ $article->body }}</p>
+            <p class="lead">{!! $article->body !!} </p>
             <hr>
             <p>Category: {{ $article->category->name }}</p>
 

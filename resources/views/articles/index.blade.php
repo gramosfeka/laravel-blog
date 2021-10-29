@@ -3,10 +3,8 @@
 @section('content')
 
     <div class="container">
-
         <div class="row">
             <div class="col-md-10">
-
                 <h1>All Articles</h1>
             </div>
             <div class="col-md-2">
@@ -14,10 +12,20 @@
                     New
                     Article</a>
             </div>
+
             <div class="col-md-12">
                 <hr>
             </div>
         </div>
+
+        @if(!count($articles) > 0)
+
+            <div class="row">
+                <div class="col-md-12">
+                    <h2 class="text-center">No data found </h2>
+                </div>
+            </div>
+        @else
         <div class="row">
             <div class="col-md-12">
                 <table class="table">
@@ -62,7 +70,10 @@
 
             </div>
         </div>
+            <div class="text-center">
+                {!! $articles->links(); !!}
+            </div>
 
-
+        @endif
     </div>
 @endsection

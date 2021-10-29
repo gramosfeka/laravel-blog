@@ -86,7 +86,7 @@
                     </div>
                     <div class="form-group mt-2">
                         <label for="created_at">Date:</label>
-                        <input name="created_at" type="date"
+                        <input name="created_at" type="datetime-local"
                                class="form-control @error('created_at') is-invalid @enderror"
                                value="" id="created_at">
                         @error('created_at')
@@ -109,10 +109,16 @@
 @section('js')
     <script>
         ClassicEditor
-            .create(document.querySelector('#editor'))
-            .then(editor => {
+            .create(function (config)
+                {
+                    config.enterMode = CKEDITOR.ENTER_BR;
+                },
+                document.querySelector('#editor'))
+            .then(
+                editor => {
                 console.log(editor);
             })
+
             .catch(error => {
                 console.error(error);
             });

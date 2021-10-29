@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Article;
 use App\Repositories\ArticleRepository;
 use App\Repositories\CategoryRepository;
-use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {

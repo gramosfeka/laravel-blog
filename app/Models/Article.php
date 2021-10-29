@@ -21,6 +21,7 @@ class Article extends Model
         'tags',
         'category_id',
         'created_at',
+        'slug',
     ];
 
     public function tags(){

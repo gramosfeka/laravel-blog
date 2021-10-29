@@ -126,7 +126,11 @@
 @section('js')
     <script>
         ClassicEditor
-            .create(document.querySelector('#editor'))
+            .create(function (config)
+                {
+                    config.enterMode = CKEDITOR.ENTER_BR;
+                },
+                document.querySelector('#editor'))
             .then(editor => {
                 console.log(editor);
             })

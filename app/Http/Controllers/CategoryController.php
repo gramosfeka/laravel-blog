@@ -3,9 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CategoryRequest;
-use App\Models\Category;
 use App\Repositories\CategoryRepository;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class CategoryController extends Controller
 {
@@ -23,6 +22,8 @@ class CategoryController extends Controller
 
     public function store(CategoryRequest $request){
         $this->categoryRepository->createCategory($request->validated());
+        Session::flash('success', 'Category created successfully');
+
         return redirect()->route('categories.index');
     }
 
@@ -33,11 +34,13 @@ class CategoryController extends Controller
 
     public function update(CategoryRequest $request, $id){
         $this->categoryRepository->updateCategory($request->validated(), $id);
+        Session::flash('success', 'Category updated successfully');
         return redirect()->route('categories.index');
     }
 
     public function destroy($id){
         $this->categoryRepository->deleteCategory($id);
+        Session::flash('success', 'Category deleted successfully');
         return redirect()->route('categories.index');
     }
 

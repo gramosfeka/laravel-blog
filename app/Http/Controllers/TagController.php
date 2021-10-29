@@ -4,8 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\TagRequest;
 use App\Repositories\TagRepository;
-use Illuminate\Http\Request;
-use function Symfony\Component\Translation\t;
+use Illuminate\Support\Facades\Session;
 
 class TagController extends Controller
 {
@@ -22,6 +21,7 @@ class TagController extends Controller
 
     public function store(TagRequest $request){
         $this->tagRepository->storeTag($request->validated());
+        Session::flash('success', 'Tag created successfully');
         return redirect()->route('tags.index');
 
 
@@ -35,12 +35,14 @@ class TagController extends Controller
 
     public function update(TagRequest $request, $id){
         $this->tagRepository->updateTag($request->validated(), $id);
+        Session::flash('success', 'Tag updated successfully');
         return redirect()->route('tags.index');
 
     }
 
     public function destroy($id){
         $this->tagRepository->destroyTag($id);
+        Session::flash('success', 'Tag deleted successfully');
         return redirect()->route('tags.index');
 
     }
