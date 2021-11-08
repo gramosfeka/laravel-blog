@@ -37,7 +37,6 @@ class CommentController extends Controller
         $this->commentRepository->updateComment($request->validated(), $id);
         Session::flash('success', 'Comment updated successfully');
         return redirect()->route('articles.show', $comment->article->id);
-
     }
 
     public function destroy($id){
