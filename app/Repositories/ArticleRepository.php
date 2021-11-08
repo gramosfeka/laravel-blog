@@ -23,20 +23,15 @@ class ArticleRepository extends BaseRepository
         return Article::orderBy('created_at', 'desc')->paginate(10);
     }
 
-    public function allUserArticles()
-    {
+    public function allUserArticles(){
         return Article::where('user_id', auth()->user()->id)->orderBy('created_at', 'desc')->paginate(10);
     }
 
-
-
     public function storeArticle(array $data ){
-
         $image = $data['image'];
         $name = time() . '.' . $image->getClientOriginalExtension();
         $image->move('images', $name);
         $slug = $this->getSlug($data['title']);
-
 
         $article = $this->model->create([
             'title' => $data['title'],
@@ -50,33 +45,31 @@ class ArticleRepository extends BaseRepository
         ]);
 
         return $article->tags()->sync($data['tags']);
-
     }
 
     public function getSlug($title){
         return $slug = preg_replace('/[^a-z0-9]+/i', '-', trim(rand(0,1000).'-'.strtolower($title)));
-
     }
 
-    public function findArticle($id)
-    {
+    public function findArticle($id){
         $article =  $this->find($id);
-        Gate::authorize('edit-article', $article);
-
         return $article;
     }
 
-    public function findSelectedTags($article)
-    {
+    public function editArticle($id){
+        $article =  $this->find($id);
+        Gate::authorize('edit-article', $article);
+        return $article;
+    }
+
+    public function findSelectedTags($article){
        foreach ($article->tags as $tag) {
           $tags_ids[] = $tag->id;
         }
        return $tags_ids;
     }
 
-
     public function updateArticle($data, $id){
-
         $article = $this->findArticle($id);
         Gate::authorize('edit-article', $article);
 
@@ -106,18 +99,14 @@ class ArticleRepository extends BaseRepository
     }
 
     public function deleteArticle($id){
-
         $article = $this->findArticle($id);
-
         Gate::authorize('edit-article', $article);
-
 
         return $article->delete();
 
     }
 
     public function approveArticle($id){
-
         $article = $this->findArticle($id);
 
         return $article->update(['status' => '1']);
@@ -125,8 +114,6 @@ class ArticleRepository extends BaseRepository
 
     public function getArticlesByCategory($id){
         return $articles = Article::where('category_id', $id)->get();
-
-
     }
 
 }

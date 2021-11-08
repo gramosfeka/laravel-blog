@@ -36,5 +36,16 @@ class AuthServiceProvider extends ServiceProvider
             }
         });
 
+
+        Gate::define('edit-comment', function ($user, $comment) {
+            if (Auth::check()) {
+                if ($user->id === $comment->user_id) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        });
+
     }
 }

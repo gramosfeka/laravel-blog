@@ -2,9 +2,11 @@
 
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\HomeController;
 
 use App\Http\Controllers\TagController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,7 +30,7 @@ Route::redirect('/', '/login')->name('index');
 
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
-Route::get('/{id}/category', [HomeController::class, 'category'])->name('category');
+Route::get('/category/{id}', [HomeController::class, 'category'])->name('category');
 
 Route::prefix('categories')->middleware('is_admin')->group(function(){
     Route::get('/', [CategoryController::class, 'index'])->name('categories.index');
@@ -58,3 +60,9 @@ Route::prefix('articles')->group(function(){
     Route::delete('/{id}/destroy', [ArticleController::class, 'destroy'])->name('articles.destroy');
 });
 
+Route::prefix('comments')->group(function () {
+    Route::post('/{post_id}', [CommentController::class, 'store'])->name('comments.store');
+    Route::get('/{id}/edit', [CommentController::class, 'edit'])->name('comments.edit');
+    Route::put('/{id}/update', [CommentController::class, 'update'])->name('comments.update');
+    Route::delete('/{id}/destroy', [CommentController::class, 'destroy'])->name('comments.destroy');
+});

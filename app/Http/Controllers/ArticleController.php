@@ -29,7 +29,6 @@ class ArticleController extends Controller
 
         }else{
             $articles = $this->articleRepository->allUserArticles() ;
-
         }
         return view('articles.index', compact('articles'));
     }
@@ -49,19 +48,14 @@ class ArticleController extends Controller
 
     public function show($id){
         $article = $this->articleRepository->findArticle($id);
-
         return view('articles.show', compact('article'));
     }
 
     public function edit($id){
-
-        $article = $this->articleRepository->findArticle($id);
+        $article = $this->articleRepository->editArticle($id);
         $tags_ids = $this->articleRepository->findSelectedTags($article);
         $tags = $this->tagRepository->allTags();
         $categories = $this->categoryRepository->allCategories();
-        Session::flash('success', 'Article updated successfully');
-
-
         return view('articles.edit', compact('categories', 'tags', 'article','tags_ids'));
     }
 
